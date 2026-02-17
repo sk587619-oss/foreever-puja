@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story - Puja & Sumit</title>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: 'Arial', sans-serif; 
+            background: #fff5f7; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #container { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(255, 0, 100, 0.1); 
+            width: 95%; 
+            max-width: 450px; 
+            position: relative;
+        }
+        
+        /* PPT Transition Effect - Full View */
+        #img-wrapper { 
+            position: relative; 
+            height: 65vh; 
+            width: 100%; 
+            margin-top: 15px; 
+            background: #000; 
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        img { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            opacity: 0; 
+            transition: opacity 1.2s ease-in-out; 
+        }
+        img.active { opacity: 1; }
+
+        .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border-radius: 50px; border: none; margin: 10px; font-weight: bold; }
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #f8bbd0; color: #ad1457; position: absolute; z-index: 100; }
+        #gallery-stage { display: none; width: 100%; }
+        .nav-btn { background-color: #d63384; color: white; width: 85%; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="https://www.dropbox.com/scl/fi/zpjhs7e4k2xotqd6yrrr4/WhatsApp-Audio-2026-02-17-at-12.59.13-PM.mpeg?rlkey=s7565i57bvcv10ieo95q6mv4g&st=uc28vn9z&dl=1" type="audio/mpeg">
+</audio>
+
+<div id="container">
+    <div id="question-stage">
+        <h1 style="color: #d63384;">Puja, will you be mine forever? ❤️</h1>
+        <button id="yesBtn" class="btn" onclick="startExperience()">YES</button>
+        <button id="noBtn" class="btn">NO</button>
+    </div>
+
+    <div id="gallery-stage">
+        <h2 id="gallery-text" style="color: #ff4d6d; margin: 5px;">Memories with You 🥰</h2>
+        <div id="img-wrapper"></div>
+        <button class="btn nav-btn" onclick="nextImage()">Next Memory ➡️</button>
+        <p id="counter" style="color: #888; font-size: 14px; margin: 10px;">1 / 10</p>
+    </div>
+</div>
+
+<script>
+    const images = [
+        "https://i.ibb.co/7xyZtLn3/Whats-App-Image-2026-02-14-at-6-26-59-PM.jpg",
+        "https://i.ibb.co/N6yt54Qp/Whats-App-Image-2026-02-14-at-6-26-57-PM.jpg",
+        "https://i.ibb.co/KjQjS7n7/Whats-App-Image-2026-02-14-at-6-26-26-PM.jpg",
+        "https://i.ibb.co/N6TXPC3H/Whats-App-Image-2026-02-14-at-6-26-24-PM.jpg",
+        "https://i.ibb.co/zjtdZhy/Whats-App-Image-2026-02-14-at-6-26-21-PM.jpg",
+        "https://i.ibb.co/rfRWCryQ/Whats-App-Image-2026-02-14-at-6-26-06-PM.jpg",
+        "https://i.ibb.co/q31PVq0v/Whats-App-Image-2026-02-14-at-6-24-08-PM.jpg",
+        "https://i.ibb.co/jkZPzc6t/Whats-App-Image-2026-02-14-at-6-24-07-PM.jpg",
+        "https://i.ibb.co/ccmmqfL7/Whats-App-Image-2026-02-14-at-6-21-49-PM.jpg",
+        "https://i.ibb.co/0yW502qh/Whats-App-Image-2026-02-14-at-6-20-55-PM.jpg"
+    ];
+
+    let currentIndex = 0;
+    const wrapper = document.getElementById('img-wrapper');
+    const bgMusic = document.getElementById('bgMusic');
+
+    images.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        if (index === 0) img.classList.add('active');
+        wrapper.appendChild(img);
+    });
+
+    const moveButton = () => {
+        const noBtn = document.getElementById('noBtn');
+        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        noBtn.style.left = `${x}px`;
+        noBtn.style.top = `${y}px`;
+    };
+
+    document.getElementById('noBtn').addEventListener('mouseover', moveButton);
+    document.getElementById('noBtn').addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
+
+    function startExperience() {
+        document.getElementById('question-stage').style.display = 'none';
+        document.getElementById('gallery-stage').style.display = 'block';
+        bgMusic.play().catch(error => {
+            console.log("Music play failed - browser blocked autoplay: ", error);
+        });
+    }
+
+    function nextImage() {
+        const imgs = wrapper.getElementsByTagName('img');
+        imgs[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        imgs[currentIndex].classList.add('active');
+        document.getElementById('counter').innerText = `${currentIndex + 1} / 10`;
+    }
+</script>
+</body>
+</html>
